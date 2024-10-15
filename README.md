@@ -34,13 +34,11 @@ In current folder create .env file
 
 and update Database credentials
 
-Install Golang Migrate[https://github.com/golang-migrate/migrate]
+Install [Golang Migrate](https://github.com/golang-migrate/migrate)
 
 Setup Go dependencies
 
-`go get .`
-
-`go mod tidy`
+`go install`
 
 Run Go project
 
