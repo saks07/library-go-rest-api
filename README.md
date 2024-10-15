@@ -11,6 +11,8 @@ Library REST API made with Go v1.23.2
 
 - `GET /borrowed/{userId}`
 - `GET /returned/{userId}`
+- `POST /borrowed/add`
+- `PUT /returned/update`
 
 ### Books API endpoints:
 

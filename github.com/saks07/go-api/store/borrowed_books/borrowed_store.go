@@ -5,6 +5,8 @@ import (
 	_ "github.com/lib/pq"
 	"log"
 	"github.com/saks07/go-api/utils"
+	"time"
+	"fmt"
 )
 
 type BorrowedBook struct {
@@ -22,6 +24,8 @@ type BorrowedBook struct {
 type BorrowedStore interface {
 	GetUserBorrowedBooks(userId string) ([]BorrowedBook, error)
 	GetUserReturnedBooks(userId string) ([]BorrowedBook, error)
+	SaveBorrowedBooks(bookId int, userId int) error
+	UpdateReturnedBooks(id int) error
 }
 
 type SQLBorrowedStore struct {
@@ -85,4 +89,41 @@ func (s *SQLBorrowedStore) GetUserReturnedBooks(userId string) ([]BorrowedBook, 
    }
 
    return borrowedBooks, nil
+}
+
+func (s *SQLBorrowedStore) SaveBorrowedBooks(bookId int, userId int) error {
+	var query string = utils.QueryStringTable("INSERT INTO {table} (book_id, user_id, borrow_date, return_date) VALUES ($1, $2, $3, NULL)", dbTable)
+	stmt, stmtErr := s.DB.Prepare(query)
+	
+	if stmtErr != nil {
+	 return stmtErr
+ }
+
+	defer stmt.Close()
+
+	formatted := createDateFormatted();
+	_, err := stmt.Exec(bookId, userId, formatted)
+
+	return err
+}
+
+func (s *SQLBorrowedStore) UpdateReturnedBooks(id int) error {
+	var query string = utils.QueryStringTable("UPDATE {table} SET return_date = $1 WHERE id = $2", dbTable)
+	stmt, stmtErr := s.DB.Prepare(query)
+	
+	if stmtErr != nil {
+	 return stmtErr
+ }
+
+	defer stmt.Close()
+
+	formatted := createDateFormatted();
+	_, err := stmt.Exec(formatted, id)
+
+	return err
+}
+
+func createDateFormatted() string {
+	timeNow := time.Now()
+	return fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d", timeNow.Year(), timeNow.Month(), timeNow.Day(), timeNow.Hour(), timeNow.Minute(), timeNow.Second())
 }

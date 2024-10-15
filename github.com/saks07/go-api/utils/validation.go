@@ -12,7 +12,7 @@ func ValidEmail(email string) bool {
   return err == nil
 }
 
-func IsNumber(value string) bool {
+func IsStringNumber(value string) bool {
 	_, err := strconv.Atoi(value)
 	return err == nil
 }

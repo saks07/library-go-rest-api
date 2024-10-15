@@ -85,6 +85,8 @@ func main() {
 	// Borrowed books API endpoints
 	http.HandleFunc("/borrowed/{userId}", borrowedHandler.ListBorrowedBooksHandler)
 	http.HandleFunc("/returned/{userId}", borrowedHandler.ListReturnedBooksHandler)
+	http.HandleFunc("/borrowed/add", borrowedHandler.CreateBorrowedBooksHandler)
+	http.HandleFunc("/returned/update", borrowedHandler.UpdateReturnedBooksHandler)
   
 	// Start server
 	if err := http.ListenAndServe(PORT, nil); err != nil {

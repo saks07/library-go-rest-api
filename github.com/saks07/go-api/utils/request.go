@@ -7,3 +7,7 @@ func CheckGetMethod(requestMethod string) bool {
 func CheckPostMethod(requestMethod string) bool {
 	return requestMethod == "POST"
 }
+
+func CheckPutMethod(requestMethod string) bool {
+	return requestMethod == "PUT"
+}
